@@ -41,6 +41,16 @@ const ItemList = ({ onCartUpdate }) => {
         }
     };
 
+    // Format price in Indian Rupees
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(price);
+    };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
@@ -61,7 +71,9 @@ const ItemList = ({ onCartUpdate }) => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Available Items</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                Available Items ({items.length})
+            </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {items.map((item) => (
@@ -70,13 +82,13 @@ const ItemList = ({ onCartUpdate }) => {
                         className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                     >
                         {/* Image */}
-                        <div className="h-48 bg-gray-100 flex items-center justify-center">
+                        <div className="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
                             <img
                                 src={item.image}
                                 alt={item.name}
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
                                 onError={(e) => {
-                                    e.target.src = 'https://via.placeholder.com/150?text=No+Image';
+                                    e.target.src = 'https://via.placeholder.com/300x300?text=No+Image';
                                 }}
                             />
                         </div>
@@ -90,8 +102,8 @@ const ItemList = ({ onCartUpdate }) => {
                                 {item.description || 'No description available'}
                             </p>
                             <div className="flex items-center justify-between">
-                                <span className="text-xl font-bold text-blue-600">
-                                    ${item.price.toFixed(2)}
+                                <span className="text-xl font-bold text-green-600">
+                                    {formatPrice(item.price)}
                                 </span>
                                 <button
                                     onClick={() => handleAddToCart(item._id)}
