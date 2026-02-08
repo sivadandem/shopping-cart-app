@@ -2,9 +2,14 @@
 
 import axios from 'axios';
 
+// Hardcode API URL for production
+const API_URL = 'https://shopping-cart-app-lkbh.onrender.com';
+
+console.log('API URL:', API_URL);
+
 // Create axios instance
 const API = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json'
     }
@@ -23,6 +28,7 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use(
     (response) => response,
     (error) => {
+        console.log('API Error:', error);
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
